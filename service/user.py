@@ -13,8 +13,8 @@ class UserService:
     def get_one(self, uid):
         return self.dao.get_one(uid)
 
-    def get_by_username(self, username):
-        return self.dao.get_by_name(username)
+    def get_by_email(self, email):
+        return self.dao.get_by_email(email)
 
     def get_all(self):
         return self.dao.get_all()

@@ -9,7 +9,7 @@ class User(db.Model):
     password = db.Column(db.String, nullable=False)
     name = db.Column(db.String)
     surname = db.Column(db.String)
-    favorite_genre = db.Column(db.Integer)
+    favorite_genre = db.Column(db.String)
 
 
 class UserScheme(Schema):
@@ -18,4 +18,4 @@ class UserScheme(Schema):
     password = fields.Str()
     name = fields.Str()
     surname = fields.Str()
-    favorite_genre = fields.Int()
+    favorite_genre = fields.Str()

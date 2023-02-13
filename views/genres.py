@@ -4,14 +4,17 @@ from flask_restx import Resource, Namespace
 from dao.model.genre import GenreSchema
 from implemented import genre_service
 from helpers.decorators import auth_required, admin_required
+from parsers import page_parser
+
 genre_ns = Namespace('genres')
 
 
 @genre_ns.route('/')
 class GenresView(Resource):
-    @auth_required
+
     def get(self):
-        rs = genre_service.get_all()
+        filters = page_parser.parse_args()
+        rs = genre_service.get_all(filters)
         res = GenreSchema(many=True).dump(rs)
         return res, 200
 

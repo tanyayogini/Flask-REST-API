@@ -12,11 +12,11 @@ class AuthService:
     def __init__(self, user_service: UserService):
         self.user_service = user_service
 
-    def generate_tokens(self, username, password):
-        """Принимает имя пользователя и пароль, проверяет их и
+    def generate_tokens(self, email, password):
+        """Принимает емэйл пользователя и пароль, проверяет их и
         создает токен доступа на 30 минут и refresh токен на 130 дней"""
 
-        user = self.user_service.get_by_username(username)
+        user = self.user_service.get_by_email(email)
 
         if user is None:
             raise abort(404)
@@ -24,8 +24,7 @@ class AuthService:
         if not self.user_service.compare_passwords(user.password, password):
             abort(400)
 
-        data = {"username": user.username,
-                "role": user.role}
+        data = {"email": user.email}
 
         min30 = datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
         data["exp"] = calendar.timegm(min30.timetuple())
@@ -38,7 +37,7 @@ class AuthService:
         return {"access_token": access_token, "refresh_token": refresh_token}
 
     def get_new_tokens(self, refresh_token):
-        """Принимает refresh токен, отдает новую пару access И refresh токен"""
+        """Принимает refresh токен, отдает новую пару access и refresh токен"""
 
         if refresh_token is None:
             abort(400)
@@ -48,14 +47,14 @@ class AuthService:
         except Exception as e:
             abort(400)
 
-        username = data.get("username")
+        email = data.get("email")
 
-        user = self.user_service.get_by_username(username)
+        user = self.user_service.get_by_email(email)
 
         data = {
-            "username": user.username,
-            "role": user.role
+            "email": user.email
         }
+
         min30 = datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
         data["exp"] = calendar.timegm(min30.timetuple())
         access_token = jwt.encode(data, SECRET, algorithm=ALGO)

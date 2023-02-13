@@ -5,13 +5,16 @@ class GenreDAO:
     def __init__(self, session):
         self.session = session
 
-    def get_one(self, bid):
-        return self.session.query(Genre).get(bid)
+    def get_one(self, gid):
 
-    def get_all(self):
-        return self.session.query(Genre).all()
+        return self.session.query(Genre).get(gid)
 
-    def create(self, genre_d):
+    def get_all(self, filters):
+        page = filters.get('page')
+        genres = self.session.query(Genre)
+        return genres.paginate(page=page, per_page=12).items
+
+    '''def create(self, genre_d):
         ent = Genre(**genre_d)
         self.session.add(ent)
         self.session.commit()
@@ -27,4 +30,4 @@ class GenreDAO:
         genre.name = genre_d.get("name")
 
         self.session.add(genre)
-        self.session.commit()
+        self.session.commit()'''

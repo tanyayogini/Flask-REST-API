@@ -5,13 +5,15 @@ class DirectorDAO:
     def __init__(self, session):
         self.session = session
 
-    def get_one(self, bid):
-        return self.session.query(Director).get(bid)
+    def get_one(self, did):
+        return self.session.query(Director).get(did)
 
-    def get_all(self):
-        return self.session.query(Director).all()
+    def get_all(self, filters):
+        page = filters.get('page')
+        directors = self.session.query(Director)
+        return directors.paginate(page=page, per_page=12).items
 
-    def create(self, director_d):
+    '''def create(self, director_d):
         ent = Director(**director_d)
         self.session.add(ent)
         self.session.commit()
@@ -27,4 +29,4 @@ class DirectorDAO:
         director.name = director_d.get("name")
 
         self.session.add(director)
-        self.session.commit()
+        self.session.commit()'''
