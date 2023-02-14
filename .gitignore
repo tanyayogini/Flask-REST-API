@@ -5,3 +5,6 @@ views/__pycache__
 .DS_Store
 __pycache__
 /venv/
+/tests/services/.pytest_cache/
+/.pytest_cache/
+/tests/views/.pytest_cache/

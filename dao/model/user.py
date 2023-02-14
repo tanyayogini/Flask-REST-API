@@ -12,6 +12,7 @@ class User(db.Model):
     favorite_genre = db.Column(db.String)
 
 
+
 class UserScheme(Schema):
     id = fields.Int()
     email = fields.Str()

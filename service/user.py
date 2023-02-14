@@ -2,6 +2,8 @@ import base64
 import hashlib
 import hmac
 
+from flask_restx import abort
+
 from dao.user import UserDAO
 from helpers.constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS
 
@@ -16,19 +18,13 @@ class UserService:
     def get_by_email(self, email):
         return self.dao.get_by_email(email)
 
-    def get_all(self):
-        return self.dao.get_all()
-
     def create(self, data):
         data["password"] = self.get_hash(data["password"])
         return self.dao.create(data)
 
     def update(self, data):
-        data["password"] = self.get_hash(data["password"])
         return self.dao.update(data)
 
-    def delete(self, uid):
-        return self.dao.delete(uid)
 
     def get_hash(self, password):
         """Принимает пароль, отдает хэш"""
@@ -49,3 +45,15 @@ class UserService:
             PWD_HASH_ITERATIONS
         ))
         return hmac.compare_digest(password_hash, new_hash)
+
+    def update_password(self, data):
+        """Принимает старый и новый пароль, если старый пароль совпадает - обновляет пароль"""
+        user = self.get_by_email(data.get('email'))
+        if user is None:
+            raise abort(404)
+
+        if not self.compare_passwords(user.password, data.get('password_1')):
+            abort(400)
+
+        data["password_2"] = self.get_hash(data.get('password_2'))
+        self.dao.update_password(data)
