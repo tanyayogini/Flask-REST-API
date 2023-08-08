@@ -1,10 +1,11 @@
-# Flask-REST-API
-Свой маленький кинопоиск. 
+# Movie search app
+Бэкенд проекта по поиску фильмов по типу Кинопоиска.
+## Python 3.10, Flask 2.2.2, SQLAlchemy 1.4.26
+## Запуск:
+* установить зависимости из файла requirements.txt;
+* запустить файл app.py.
 
-  ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
-  ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-  ![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
-  
+## В проекте реализованы:
 - **Аутентификация**
     
    Реализована регистрация пользователя и аутентификацией на основе спецификации JWT.
